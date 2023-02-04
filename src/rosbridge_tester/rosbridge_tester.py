@@ -189,7 +189,7 @@ class RosbridgeTester:
             self.update_checker[eCheckerIndex.TASK_NAME.value] = self.task_name
             self.update_checker[eCheckerIndex.TASK_ID.value] = self.task_id
             self.update_checker[eCheckerIndex.TASK_STATE.value] = self.task_state
-            rospy.loginfo("task_name: {0}, task_id: {1}, task_state: {2}".format(self.task_name, self.task_id, self.task_state))
+            rospy.loginfo("task_name: {0}, task_id: {1}, task_state: {2}\n".format(self.task_name, self.task_id, self.task_state))
 
     def logging_event_state(self):
         if self.update_checker[eCheckerIndex.EM_STATE.value] != self.em_state \
