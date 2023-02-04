@@ -91,7 +91,7 @@ class RosbridgeTester:
                 self.task_state = self.get_state(TaskObject(self.task_name.value, self.task_id, eRunType.PAUSE_BY_BUTTON.value, []))
             self.em_state = eEventState.ACTIVATING
         else:
-            if self.task_state == eTaskState.PAUSE_BY_BUTTON:
+            if self.task_state == eTaskState.PAUSE:
                 self.task_state = self.get_state(TaskObject(self.task_name.value, self.task_id, eRunType.RESUME.value, []))
             self.em_state = eEventState.DEACTIVATED
         return True, "Success, em_state: {0}".format(self.em_state)
@@ -102,7 +102,7 @@ class RosbridgeTester:
                 self.task_state = self.get_state(TaskObject(self.task_name.value, self.task_id, eRunType.PAUSE_BY_BUTTON.value, []))
             self.manual_state = eEventState.ACTIVATING
         else:
-            if self.task_state == eTaskState.PAUSE_BY_BUTTON:
+            if self.task_state == eTaskState.PAUSE:
                 self.task_state = self.get_state(TaskObject(self.task_name.value, self.task_id, eRunType.RESUME.value, []))
             self.manual_state = eEventState.DEACTIVATED
         return True, "Success, manual_state: {0}".format(self.manual_state)

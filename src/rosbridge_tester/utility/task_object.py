@@ -19,8 +19,7 @@ class TaskObject:
         if type(data) == type([]):
             self.data_table = self.get_table_from_list(data)            
         elif type(data) == type({}):
-            self.data_table = deepcopy(data)
-        rospy.loginfo("in TaskObject, task_name: {0}, task_id: {1}, run_type: {2}".format(task_name, task_id, run_type))
+            self.data_table = deepcopy(data)        
 
     def get_task_name(self):
         return self.task_name
