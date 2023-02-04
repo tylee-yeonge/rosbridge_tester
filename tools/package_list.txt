@@ -1,1 +1,2 @@
 framework/interfaces/thira_common_msgs
+framework/interfaces/accessories_msgs
