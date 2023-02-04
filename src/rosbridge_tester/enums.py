@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from enum import Enum
+from enum import IntEnum
 
 class eTaskName(Enum):
     INIT = "init"
@@ -31,3 +32,12 @@ class eRunType(Enum):
 class eEventState(Enum):
     ACTIVATING = "activating"
     DEACTIVATED = "deactivated"
+
+class eCheckerIndex(IntEnum):
+    TASK_NAME = 0
+    TASK_ID = 1
+    TASK_STATE = 2
+    EM_STATE = 3
+    MANUAL_STATE = 4
+    TASK_CANCEL_STATE = 5
+    INIT_POSE_STATE = 6
