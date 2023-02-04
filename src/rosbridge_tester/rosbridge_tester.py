@@ -70,7 +70,8 @@ class RosbridgeTester:
         self.check_task_queue()
         self.update_state()
         self.publish_state()
-        self.logging_state()    
+        self.logging_task_state()    
+        self.logging_event_state()    
 
     def callback_get_task(self, msg):
         self.task_queue.clear_task_queue()
@@ -181,7 +182,7 @@ class RosbridgeTester:
 
         return task_event
 
-    def logging_state(self):
+    def logging_task_state(self):
         if self.update_checker[eCheckerIndex.TASK_NAME.value] != self.task_name \
             or self.update_checker[eCheckerIndex.TASK_ID.value] != self.task_id \
             or self.update_checker[eCheckerIndex.TASK_STATE.value] != self.task_state:            
@@ -189,6 +190,8 @@ class RosbridgeTester:
             self.update_checker[eCheckerIndex.TASK_ID.value] = self.task_id
             self.update_checker[eCheckerIndex.TASK_STATE.value] = self.task_state
             rospy.loginfo("task_name: {0}, task_id: {1}, task_state: {2}".format(self.task_name, self.task_id, self.task_state))
+
+    def logging_event_state(self):
         if self.update_checker[eCheckerIndex.EM_STATE.value] != self.em_state \
             or self.update_checker[eCheckerIndex.MANUAL_STATE.value] != self.manual_state \
             or self.update_checker[eCheckerIndex.TASK_CANCEL_STATE.value] != self.task_cancel_state \
