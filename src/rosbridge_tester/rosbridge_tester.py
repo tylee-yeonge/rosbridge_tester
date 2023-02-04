@@ -47,7 +47,7 @@ class RosbridgeTester:
         self.init_pose_state = eEventState.DEACTIVATED
         self.update_checker = [self.task_name, self.task_id, self.task_state, self.em_state, self.manual_state, self.task_cancel_state, self.init_pose_state]
 
-    def set_subscriber(self):
+    def set_subscriber(self):        
         rospy.Subscriber("rosbridge_tester/run_task", Task, self.callback_get_task)        
 
     def set_pub(self):
@@ -62,14 +62,14 @@ class RosbridgeTester:
         rospy.Service("rosbridge_tester/set_manual", SetBool, self.handle_set_manual)
         rospy.Service("rosbridge_tester/set_task_cancel", Trigger, self.handle_set_task_cancel)
         rospy.Service("rosbridge_tester/set_init_pose", Trigger, self.handle_set_init_pose)
+        rospy.Service("rosbridge_tester/update", Trigger, self.handle_update)
 
     def set_timer(self):
         rospy.Timer(rospy.Duration(0.1), self.callback_timer)
 
     def callback_timer(self, event):
         self.check_task_queue()
-        self.update_state()
-        self.publish_state()
+        self.update_state()    
         self.logging_task_state()    
         self.logging_event_state()    
 
@@ -116,6 +116,11 @@ class RosbridgeTester:
         self.init_pose_state = eEventState.ACTIVATING
         return True, "Success, init_pose_state: {0}".format(self.init_pose_state)
 
+    def handle_update(self, msg):
+        self.pub_task_state.publish(self.get_task_state_msg())
+        self.pub_event_state.publish(self.get_event_msg())
+        return True, "Success"
+
     def check_task_queue(self):
         if not self.task_queue.check_empty_task_queue():
             if self.task_state == eTaskState.DONE:                
@@ -159,10 +164,6 @@ class RosbridgeTester:
         if self.time_checker_init_pose.set_time(self.init_pose_state == eEventState.ACTIVATING):
             self.init_pose_state = eEventState.DEACTIVATED
 
-    def publish_state(self):
-        self.pub_task_state.publish(self.get_task_state_msg())
-        self.pub_event_state.publish(self.get_event_msg())
-
     def get_task_state_msg(self):
         task_state = TaskState()
         task_state.task_name = self.task_name.value
@@ -190,6 +191,7 @@ class RosbridgeTester:
             self.update_checker[eCheckerIndex.TASK_ID.value] = self.task_id
             self.update_checker[eCheckerIndex.TASK_STATE.value] = self.task_state
             rospy.loginfo("task_name: {0}, task_id: {1}, task_state: {2}\n".format(self.task_name, self.task_id, self.task_state))
+            self.pub_task_state.publish(self.get_task_state_msg())
 
     def logging_event_state(self):
         if self.update_checker[eCheckerIndex.EM_STATE.value] != self.em_state \
@@ -201,3 +203,4 @@ class RosbridgeTester:
             self.update_checker[eCheckerIndex.TASK_CANCEL_STATE.value] = self.task_cancel_state
             self.update_checker[eCheckerIndex.INIT_POSE_STATE.value] = self.init_pose_state
             rospy.loginfo("em_state: {0}, manual_state:{1}, task_cancel: {2}, init_pose: {3}\n".format(self.em_state, self.manual_state, self.task_cancel_state, self.init_pose_state))
+            self.pub_event_state.publish(self.get_event_msg())
